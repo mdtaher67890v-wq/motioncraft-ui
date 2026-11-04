@@ -8,21 +8,28 @@ export type PantryState = {
 
 const KEY = "pocket-pantry-v3";
 
-function load(): PantryState {
-  if (typeof window === "undefined") return { selected: [], favorites: [], done: {} };
+let state: PantryState = { selected: [], favorites: [], done: {} };
+let hydrated = false;
+
+/**
+ * Loads persisted state after mount so server and client render the same
+ * first HTML (avoids a hydration mismatch).
+ */
+export function hydratePantry() {
+  if (hydrated || typeof window === "undefined") return;
+  hydrated = true;
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || "{}");
-    return {
+    setState({
       selected: Array.isArray(raw.selected) ? raw.selected : [],
       favorites: Array.isArray(raw.favorites) ? raw.favorites : [],
       done: raw.done && typeof raw.done === "object" ? raw.done : {},
-    };
+    });
   } catch {
-    return { selected: [], favorites: [], done: {} };
+    /* keep defaults */
   }
 }
 
-let state: PantryState = load();
 const listeners = new Set<() => void>();
 
 function setState(next: PantryState) {
