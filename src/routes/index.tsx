@@ -26,6 +26,24 @@ const HERO_WORDS = "What can you cook tonight?".split(" ");
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Pocket Pantry — what can you cook tonight?" },
+      {
+        name: "description",
+        content:
+          "Tick what is in your kitchen and get viral recipes ranked by how little you need to buy, each with a full step-by-step page.",
+      },
+      { property: "og:title", content: "Pocket Pantry — what can you cook tonight?" },
+      {
+        property: "og:description",
+        content:
+          "Tick what is in your kitchen and get viral recipes ranked by how little you need to buy, each with a full step-by-step page.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
 });
 
 function Index() {
