@@ -44,6 +44,7 @@
   --color-ok: var(--ok);
   --color-ok-soft: var(--ok-soft);
   --color-accent-soft: var(--accent-soft);
+  --shadow-card-hover: 0 18px 36px -18px color-mix(in oklab, var(--foreground) 35%, transparent);
 }
 
 :root {
@@ -72,6 +73,8 @@
   --ok: oklch(0.535 0.12 155);
   --ok-soft: oklch(0.957 0.03 155);
   --accent-soft: oklch(0.958 0.02 30);
+  --progress-gradient: linear-gradient(90deg, var(--primary), oklch(0.76 0.14 32), var(--primary));
+  --step-ring: oklch(0.235 0.008 106 / 30%);
 }
 
 .dark {
@@ -99,6 +102,8 @@
   --ok: oklch(0.72 0.14 158);
   --ok-soft: oklch(0.32 0.05 155);
   --accent-soft: oklch(0.34 0.06 30);
+  --progress-gradient: linear-gradient(90deg, var(--primary), oklch(0.79 0.13 32), var(--primary));
+  --step-ring: oklch(0.98 0.003 106 / 30%);
 }
 
 @layer base {
@@ -121,8 +126,39 @@
 @layer utilities {
   .text-balance-tight {
     text-wrap: balance;
-    letter-spacing: -0.035em;
+    letter-spacing: 0;
   }
+}
+
+@utility progress-gradient {
+  background: var(--progress-gradient);
+  background-size: 200% 100%;
+  animation: pp-flow 2.2s linear infinite;
+}
+
+@utility step-current-ring {
+  animation: pp-ring 2s ease-out infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
 }
 
 @keyframes pp-beat {
@@ -140,8 +176,14 @@
 }
 
 @keyframes pp-ring {
-  0% { box-shadow: 0 0 0 0 oklch(0.235 0.008 106 / 30%); }
-  100% { box-shadow: 0 0 0 14px oklch(0.235 0.008 106 / 0%); }
+  0% { box-shadow: 0 0 0 0 var(--step-ring); }
+  100% { box-shadow: 0 0 0 14px color-mix(in oklab, var(--step-ring) 0%, transparent); }
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 120px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

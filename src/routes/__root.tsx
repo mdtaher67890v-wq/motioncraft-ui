@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Pocket Pantry" },
       { name: "description", content: "Step-by-step recipes for what you already have." },
       { property: "og:title", content: "Pocket Pantry" },
@@ -124,20 +124,22 @@ function RootShell({ children }: { children: ReactNode }) {
 function TopBar() {
   const pantry = usePantry();
   return (
-    <div className="mx-auto flex w-full max-w-[1100px] items-center justify-between gap-3 px-4 py-4">
-      <Link to="/" className="flex items-center gap-2 text-lg font-extrabold tracking-tight">
-        <span
-          className="size-3 rounded-full bg-primary"
-          style={{ animation: "pp-beat 2.8s ease-in-out infinite" }}
-        />
-        Pocket Pantry
-      </Link>
-      {pantry.favorites.length > 0 && (
-        <span className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
-          <Heart className="size-3.5 fill-primary stroke-primary" />
-          {pantry.favorites.length} saved
-        </span>
-      )}
+    <div className="sticky top-0 z-20 border-b border-line/70 bg-background/90 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
+      <div className="mx-auto flex min-h-14 w-full max-w-[1100px] items-center justify-between gap-3 px-4 py-2.5">
+        <Link to="/" className="flex min-h-11 items-center gap-2 text-lg font-extrabold">
+          <span
+            className="size-3 rounded-full bg-primary"
+            style={{ animation: "pp-beat 2.8s ease-in-out infinite" }}
+          />
+          Pocket Pantry
+        </Link>
+        {pantry.favorites.length > 0 && (
+          <span className="flex min-h-11 items-center gap-1.5 font-mono text-xs text-muted-foreground">
+            <Heart className="size-3.5 fill-primary stroke-primary" />
+            {pantry.favorites.length} saved
+          </span>
+        )}
+      </div>
     </div>
   );
 }

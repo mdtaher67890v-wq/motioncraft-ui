@@ -35,7 +35,8 @@ const EASE = [0.2, 0.7, 0.2, 1] as const;
 
 function RecipePage() {
   const { id } = Route.useParams();
-  const recipe = getRecipe(id)!;
+  const recipe = getRecipe(id);
+  if (!recipe) throw notFound();
   const pantry = usePantry();
 
   const have = pantry.selected.length > 0;
@@ -49,8 +50,8 @@ function RecipePage() {
   const all = doneSet.size === total;
 
   const index = RECIPES.indexOf(recipe);
-  const prev = RECIPES[(index + RECIPES.length - 1) % RECIPES.length];
-  const next = RECIPES[(index + 1) % RECIPES.length];
+  const prev = RECIPES[(index + RECIPES.length - 1) % RECIPES.length] ?? recipe;
+  const next = RECIPES[(index + 1) % RECIPES.length] ?? recipe;
 
   const saved = isFavorite(pantry, id);
 
@@ -92,7 +93,7 @@ function RecipePage() {
       </Link>
 
       {/* hero photo */}
-      <div className="mt-1.5 aspect-16/10 max-h-[460px] w-full overflow-hidden rounded-3xl bg-soft">
+        className="mt-1.5 aspect-4/3 max-h-[460px] w-full overflow-hidden rounded-2xl bg-soft sm:aspect-16/10 sm:rounded-3xl"
         <motion.img
           src={recipe.image}
           alt={recipe.name}
@@ -108,7 +109,7 @@ function RecipePage() {
       {/* heading */}
       <div className="grid gap-2.5 pt-5">
         <div className="flex items-start justify-between gap-3">
-          <h1 className="min-w-0 text-[clamp(30px,6vw,46px)] leading-[1.05] font-extrabold text-balance-tight">
+          <h1 className="min-w-0 text-3xl leading-[1.05] font-extrabold text-balance-tight sm:text-4xl">
             {recipe.name}
           </h1>
           <FavButton
@@ -212,13 +213,11 @@ function RecipePage() {
               <motion.div
                 className="h-full rounded-full"
                 style={{
-                  background: "linear-gradient(90deg,#E8432B,#FF8A5C,#E8432B)",
-                  backgroundSize: "200% 100%",
-                  animation: "pp-flow 2.2s linear infinite",
                 }}
                 initial={false}
                 animate={{ width: `${(doneSet.size / total) * 100}%` }}
                 transition={{ duration: 0.5, ease: EASE }}
+                className="progress-gradient"
               />
             </div>
             <span className="font-mono text-xs text-muted-foreground">
@@ -253,14 +252,20 @@ function RecipePage() {
                     <span
                       className={`grid size-11 place-items-center rounded-full text-[17px] font-extrabold transition-all duration-300 ${
                         isDone
-                          ? "scale-92 bg-ok text-white"
+                          ? "scale-92 bg-ok text-primary-foreground"
                           : isCur
-                            ? "bg-foreground text-white"
+                            ? "bg-foreground text-primary-foreground"
                             : "bg-soft text-foreground"
                       }`}
-                      style={isCur ? { animation: "pp-ring 2s ease-out infinite" } : undefined}
+                      className={`grid size-11 place-items-center rounded-full text-[17px] font-extrabold transition-all duration-300 ${
+                        isDone
+                          ? "scale-92 bg-ok text-primary-foreground"
+                          : isCur
+                            ? "bg-foreground text-primary-foreground step-current-ring"
+                            : "bg-soft text-foreground"
+                      }`}
                     >
-                      {isDone ? <Check className="size-5 stroke-[3] text-white" /> : k + 1}
+                      {isDone ? <Check className="size-5 stroke-[3] text-primary-foreground" /> : k + 1}
                     </span>
                     <span className="min-w-0 pt-2 text-[16.5px] leading-relaxed">{step}</span>
                   </button>

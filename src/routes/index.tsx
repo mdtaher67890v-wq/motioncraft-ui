@@ -83,8 +83,8 @@ function Index() {
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4 pb-14">
       {/* hero */}
-      <header className="grid gap-3.5 pt-7 pb-6">
-        <h1 className="max-w-14ch text-[clamp(36px,8vw,64px)] leading-[1.02] font-extrabold text-balance-tight">
+      <header className="grid gap-3.5 pt-6 pb-6 sm:pt-7">
+        <h1 className="max-w-[14ch] text-4xl leading-[1.02] font-extrabold text-balance-tight sm:text-6xl">
           {HERO_WORDS.map((word, i) => (
             <span key={i} className="inline-block overflow-hidden pb-[0.08em] align-top">
               <motion.span
@@ -116,7 +116,7 @@ function Index() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: EASE, delay: 0.55 }}
         aria-labelledby="pt"
-        className="grid gap-4.5 rounded-3xl border border-line p-5"
+        className="grid gap-4 rounded-2xl border border-line p-4 sm:gap-4.5 sm:rounded-3xl sm:p-5"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <h2 id="pt" className="text-lg font-bold tracking-tight">
@@ -168,7 +168,7 @@ function Index() {
       </motion.section>
 
       {/* sticky filter bar */}
-      <div className="sticky top-0 z-10 mt-5.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2.5 border-b border-line bg-background py-3">
+      <div className="sticky top-[calc(env(safe-area-inset-top,0px)+58px)] z-10 mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2.5 border-b border-line bg-background/95 py-3 backdrop-blur-xl supports-[backdrop-filter]:bg-background/85 sm:top-[calc(env(safe-area-inset-top,0px)+64px)]">
         <div className="min-w-0 text-[13.5px] text-muted-foreground" aria-live="polite">
           {have ? (
             <>
@@ -182,14 +182,14 @@ function Index() {
             </>
           )}
         </div>
-        <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter recipes">
+        <div className="flex max-w-full flex-nowrap gap-1.5 overflow-x-auto overscroll-x-contain py-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap" role="group" aria-label="Filter recipes">
           {FILTERS.map((f) => (
             <button
               key={f.key}
               type="button"
               aria-pressed={filter === f.key}
               onClick={() => setFilter(f.key)}
-              className={`min-h-9 rounded-full px-3.5 py-1 text-[13px] font-semibold transition-colors duration-200 ${
+              className={`min-h-11 shrink-0 rounded-full px-3.5 py-1 text-[13px] font-semibold transition-colors duration-200 sm:min-h-9 ${
                 filter === f.key
                   ? "bg-foreground text-primary-foreground"
                   : "bg-soft text-muted-foreground hover:text-foreground"

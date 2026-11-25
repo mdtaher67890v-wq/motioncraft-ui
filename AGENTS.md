@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+Keep UI and state logic in focused TanStack routes, reusable components, and shared library modules so home and recipe workflows use one source of truth.
